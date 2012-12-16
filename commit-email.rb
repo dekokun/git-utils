@@ -106,8 +106,8 @@ class GitCommitMailer
     end
 
     def git(git_bin_path, repository, command, &block)
-      $executing_git ||= SpentTime.new("executing git commands")
-      $executing_git.spend do
+      $executing_git ||= MeasureSpentTime.new("executing git commands")
+      $executing_git.measure do
         execute("#{git_bin_path} --git-dir=#{shell_escape(repository)} #{command}", &block)
       end
     end
@@ -147,8 +147,8 @@ class GitCommitMailer
     end
 
     def send_mail(server, port, from, to, mail)
-      $sending_mail ||= SpentTime.new("sending mails")
-      $sending_mail.spend do
+      $sending_mail ||= MeasureSpentTime.new("sending mails")
+      $sending_mail.measure do
         Net::SMTP.start(server, port) do |smtp|
           smtp.open_message_stream(from, to) do |f|
             f.print(mail)
@@ -2702,8 +2702,8 @@ if __FILE__ == $0
     mailer = GitCommitMailer.parse_options_and_create(argv)
 
     if not mailer.track_remote?
-      running = SpentTime.new("running the whole command")
-      running.spend do
+      running = MeasureSpentTime.new("running the whole command")
+      running.measure do
         while line = STDIN.gets
           old_revision, new_revision, reference = line.split
           processing_change = [old_revision, new_revision, reference]
