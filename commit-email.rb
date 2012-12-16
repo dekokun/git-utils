@@ -32,7 +32,7 @@ require "shellwords"
 require "erb"
 require "digest"
 
-class SpentTime
+class MeasureSpentTime
   def initialize(label)
     @label = label
     @seconds = 0.0
