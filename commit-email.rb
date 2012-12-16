@@ -38,7 +38,7 @@ class MeasureSpentTime
     @seconds = 0.0
   end
 
-  def spend
+  def measure
     start_time = Time.now
     returned_object = yield
     @seconds += (Time.now - start_time)
